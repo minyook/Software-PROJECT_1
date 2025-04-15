@@ -5,12 +5,37 @@
 package deu.cse.lectureroomreservation.view;
 
 import javax.swing.JOptionPane;
+import javax.swing.*;
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
+
 
 /**
  *
  * @author 00rya
  */
 public class LoginView extends javax.swing.JFrame {
+    
+    private boolean checkCredentials(String username, String password){    
+        try (BufferedReader br = new BufferedReader(new FileReader("UserData.txt"))) {
+        String line;
+        while ((line = br.readLine()) != null) {
+            String[] credentials = line.split(",");
+            if (credentials.length == 2) {
+                String fileUsername = credentials[0].trim();
+                String filePassword = credentials[1].trim();
+                if (fileUsername.equals(username) && filePassword.equals(password)) {
+                    return true;
+                }
+            }
+        }
+    } catch (IOException e) {
+        JOptionPane.showMessageDialog(this, "파일을 읽는 중 오류가 발생했습니다.");
+        e.printStackTrace();
+    }
+    return false;
+}
 
     /**
      * Creates new form LoginView
@@ -31,8 +56,8 @@ public class LoginView extends javax.swing.JFrame {
         jPanel1 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
-        jTextField1 = new javax.swing.JTextField();
-        jPasswordField1 = new javax.swing.JPasswordField();
+        ID = new javax.swing.JTextField();
+        Password = new javax.swing.JPasswordField();
         jLabel3 = new javax.swing.JLabel();
         jButton2 = new javax.swing.JButton();
 
@@ -42,14 +67,14 @@ public class LoginView extends javax.swing.JFrame {
 
         jLabel2.setText("password:");
 
-        jTextField1.setPreferredSize(new java.awt.Dimension(100, 25));
-        jTextField1.addActionListener(new java.awt.event.ActionListener() {
+        ID.setPreferredSize(new java.awt.Dimension(100, 25));
+        ID.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextField1ActionPerformed(evt);
+                IDActionPerformed(evt);
             }
         });
 
-        jPasswordField1.setPreferredSize(new java.awt.Dimension(100, 25));
+        Password.setPreferredSize(new java.awt.Dimension(100, 25));
 
         jLabel3.setFont(new java.awt.Font("맑은 고딕", 1, 18)); // NOI18N
         jLabel3.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
@@ -76,8 +101,8 @@ public class LoginView extends javax.swing.JFrame {
                             .addComponent(jLabel1))
                         .addGap(18, 18, 18)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(jPasswordField1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(Password, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(ID, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(18, 18, 18)
                         .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 83, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(39, Short.MAX_VALUE))
@@ -92,11 +117,11 @@ public class LoginView extends javax.swing.JFrame {
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel1)
-                            .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(ID, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(18, 18, 18)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel2)
-                            .addComponent(jPasswordField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addComponent(Password, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 68, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(78, Short.MAX_VALUE))
         );
@@ -122,21 +147,23 @@ public class LoginView extends javax.swing.JFrame {
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jTextField1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField1ActionPerformed
+    private void IDActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_IDActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jTextField1ActionPerformed
+    }//GEN-LAST:event_IDActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         // TODO add your handling code here:
-        String username = jTextField1.getText();
-        String password = new String(jPasswordField1.getPassword());
-    
-    // 간단한 사용자 인증 예제
-    if ("test1".equals(username) && "1234".equals(password)) {
-        JOptionPane.showMessageDialog(this, "로그인 성공");
-    } else {
-        JOptionPane.showMessageDialog(this, "아이디 또는 패스워드를 확인하세요.");
-    }
+        
+          String username = ID.getText();
+            String password = new String(Password.getPassword());
+
+            if (checkCredentials(username, password)) {
+                JOptionPane.showMessageDialog(this, "로그인 성공");
+            } else {
+                JOptionPane.showMessageDialog(this, "아이디 또는 패스워드를 확인하세요.");
+            }
+            
+        
     
     
     }//GEN-LAST:event_jButton2ActionPerformed
@@ -177,12 +204,12 @@ public class LoginView extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JTextField ID;
+    private javax.swing.JPasswordField Password;
     private javax.swing.JButton jButton2;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JPanel jPanel1;
-    private javax.swing.JPasswordField jPasswordField1;
-    private javax.swing.JTextField jTextField1;
     // End of variables declaration//GEN-END:variables
 }
