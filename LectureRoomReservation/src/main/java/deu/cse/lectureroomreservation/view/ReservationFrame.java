@@ -3,7 +3,6 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
 package deu.cse.lectureroomreservation.view;
-
 /**
  *
  * @author rbcks
@@ -13,11 +12,10 @@ public class ReservationFrame extends javax.swing.JFrame {
     /**
      * Creates new form ReservationFrame
      */
-    public ReservationFrame() {
+    public ReservationFrame() { 
         initComponents();
         this.setLocationRelativeTo(null);
     }
-
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -240,7 +238,7 @@ public class ReservationFrame extends javax.swing.JFrame {
         this.dispose();
         new ReservationMenuFrame().setVisible(true);
     }//GEN-LAST:event_backBtnActionPerformed
-
+    
     /**
      * @param args the command line arguments
      */
